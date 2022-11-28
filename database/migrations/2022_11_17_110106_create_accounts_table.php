@@ -14,9 +14,9 @@ return new class () extends Migration {
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('owner')->unique();
+            $table->string('name');
             $table->double('balance');
-            $table->string('currency', 50);
+            $table->foreignId('user_id')->constrained('users');
             $table->timestamps();
         });
     }
