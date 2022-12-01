@@ -1,4 +1,4 @@
-.PHONY: down up migrate fresh migratereset migratefresh
+.PHONY: down up migrate fresh migratereset migratefresh migrateseed
 
 down:
 	@./vendor/bin/sail down 
@@ -14,6 +14,9 @@ migratereset:
 
 migratefresh:
 	@./vendor/bin/sail artisan migrate:fresh 
+	
+migrateseed:
+	@./vendor/bin/sail artisan migrate:refresh --seed
 	
 passportinstall:
 	@./vendor/bin/sail artisan passport:install

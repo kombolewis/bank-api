@@ -12,11 +12,10 @@ return new class () extends Migration {
      */
     public function up()
     {
-        Schema::create('accounts', function (Blueprint $table) {
-            $table->increments('id');
-            $table->double('balance');
-            $table->string('currency')->default('usd');
-            $table->foreignId('account_user_id')->constrained('account_users');
+        Schema::create('account_users', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('email')->unique();
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class () extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('accounts');
+        Schema::dropIfExists('account_users');
     }
 };

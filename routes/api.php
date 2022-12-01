@@ -1,11 +1,15 @@
 <?php
 
-use App\Http\Controllers\AccountsController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\TransferController;
 use App\Models\Transfer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\User\AccountsController;
+use App\Http\Controllers\User\AccountActionsController;
+use App\Http\Controllers\User\AccountTransfersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,9 +26,25 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/accounts', [AccountsController::class, 'store']);
-Route::get('/accounts/{account}', [AccountsController::class, 'show']);
-Route::get('/accounts/history/{account}', [AccountsController::class, 'history']);
-Route::post('/transfer', [TransferController::class, 'transfer']);
+
+Route::prefix('auth')->group(function () {
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/register', [AuthController::class, 'register']);
+});
+
+Route::prefix('admin')->middleware(['auth:api','can:isAdmin'])->group(function () {
+    Route::get('roles', [RoleController::class, 'index']);
+    Route::resource('users', AdminController::class)->only(['index', 'store']);
+});
+
+Route::prefix('user')->middleware('auth:api')->group(function () {
+    Route::middleware('can:isCreator')->group(function () {
+        Route::post('/actions', [AccountActionsController::class, 'store']);
+        Route::post('/transfer', [AccountTransfersController::class, 'store']);
+    });
+
+    Route::middleware('can:isViewer')->group(function () {
+        Route::get('/actions/{account}', [AccountActionsController::class, 'show']);
+        Route::get('/transfer/{account}', [AccountTransfersController::class, 'show']);
+    });
+});
