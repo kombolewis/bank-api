@@ -1,7 +1,4 @@
-.PHONY: down up migrate fresh migratereset migratefresh migrateseed test key
-
-down:
-	@./vendor/bin/sail down 
+.PHONY: up migrate fresh migratereset migratefresh migrateseed test key
 
 up:
 	@./vendor/bin/sail up 
@@ -20,10 +17,24 @@ migrateseed:
 	
 passportinstall:
 	@./vendor/bin/sail artisan passport:install
+
 test:
 	@./vendor/bin/sail phpunit
+
 key:
 	@./vendor/bin/sail artisan key:generate
 
 saildetach:
 	@./vendor/bin/sail up -d
+
+setup:
+	php -r "file_exists('.env') || copy('.env.example', '.env');"
+	composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist  --ignore-platform-reqs
+	@./vendor/bin/sail up -d
+	@./vendor/bin/sail artisan key:generate
+	@./vendor/bin/sail artisan migrate 
+	@./vendor/bin/sail artisan passport:install
+	chmod -R 777 storage bootstrap/cache
+	touch database/database.sqlite
+	echo 'DONE'
+	
