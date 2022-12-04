@@ -26,4 +26,4 @@ key:
 	@./vendor/bin/sail artisan key:generate
 
 saildetach:
-	@./vendor/bin/saill up -d
+	@./vendor/bin/sail up -d
