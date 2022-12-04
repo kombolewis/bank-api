@@ -13,11 +13,11 @@ class AdminController extends Controller
     /**
      * view registered users
      *
-     * @return Response
+     * @return Illuminate\Http\Response
      */
     public function index()
     {
-        return User::all();
+        return User::all()->toJson();
     }
     /**
      * edit/assign roles for users

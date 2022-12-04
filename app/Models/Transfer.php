@@ -38,11 +38,12 @@ class Transfer extends Model
             }
         });
     }
+    
     /**
      * Execute transfer action
      *
      * @param array $transfer
-     * @return void
+     * @return bool
      */
     public function executeTransfer(array $transfer): bool
     {

@@ -9,6 +9,12 @@ use App\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {
+    /**
+     * login a user with passport
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response     *
+     */
     public function login(Request $request)
     {
         $req = Request::create(config('services.passport.login_endpoint'), 'POST', [
@@ -24,6 +30,12 @@ class AuthController extends Controller
         return app()->handle($req);
     }
 
+    /**
+     * Register new users
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response     *
+     */
     public function register(Request $request)
     {
         $request->validate([
@@ -35,6 +47,12 @@ class AuthController extends Controller
         return User::create($request->all());
     }
 
+    /**
+     * Remove granted tokens/log out a user
+     *
+     * @return \Illuminate\Http\Response     *
+     *
+     */
     public function logout()
     {
         auth()->user()->token->each(function ($token) {

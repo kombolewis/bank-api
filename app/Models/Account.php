@@ -21,11 +21,14 @@ class Account extends Model
     ];
 
     protected $appends = [
-        'name'
+        'name',
+        'email'
     ];
 
     protected $hidden = [
         'accountUser',
+        'created_at',
+        'updated_at'
     ];
 
     public static function boot()
@@ -55,6 +58,17 @@ class Account extends Model
         );
     }
 
+    /**
+     * attribute email accessor
+     *
+     * @return Attribute
+     */
+    protected function email(): Attribute
+    {
+        return new Attribute(
+            get: fn () => $this->accountUser->email,
+        );
+    }
 
 
     public function history()

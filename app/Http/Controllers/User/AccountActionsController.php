@@ -10,12 +10,19 @@ use App\Http\Controllers\Controller;
 
 class AccountActionsController extends Controller
 {
+    /**
+     * Create a new account
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response     *
+     */
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'currency' => 'string|max:255',
             'email' => 'required|string|email|max:255',
-            'deposit' => 'required|string',
+            'deposit' => 'required|numeric',
         ]);
 
         return AccountUser::firstOrCreate(
@@ -36,9 +43,6 @@ class AccountActionsController extends Controller
      */
     public function show(Account $account)
     {
-        return $account;
-        // return response()->json([
-        //     'balance' => $account->balance
-        // ], 200);
+        return $account->only(['name','currency','balance']);
     }
 }

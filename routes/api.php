@@ -33,7 +33,7 @@ Route::prefix('auth')->group(function () {
 });
 
 Route::prefix('admin')->middleware(['auth:api','can:isAdmin'])->group(function () {
-    Route::get('roles', [RoleController::class, 'index']);
+    Route::apiResource('roles', RoleController::class);
     Route::resource('users', AdminController::class)->only(['index', 'store']);
 });
 

@@ -29,7 +29,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('isAdmin', fn (User $user) => $user->hasRole('admin'));
-        Gate::define('isViewer', fn (User $user) => $user->hasRoles(['creator','admin']));
-        Gate::define('isCreator', fn (User $user) => $user->hasRoles(['viewer','creator','admin']));
+        Gate::define('isCreator', fn (User $user) => $user->hasRoles(['creator','admin']));
+        Gate::define('isViewer', fn (User $user) => $user->hasRoles(['viewer','creator','admin']));
     }
 }

@@ -1,4 +1,4 @@
-.PHONY: down up migrate fresh migratereset migratefresh migrateseed
+.PHONY: down up migrate fresh migratereset migratefresh migrateseed test
 
 down:
 	@./vendor/bin/sail down 
@@ -20,3 +20,5 @@ migrateseed:
 	
 passportinstall:
 	@./vendor/bin/sail artisan passport:install
+test:
+	@./vendor/bin/sail phpunit
