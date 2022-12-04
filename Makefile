@@ -24,3 +24,6 @@ test:
 	@./vendor/bin/sail phpunit
 key:
 	@./vendor/bin/sail artisan key:generate
+
+saildetach:
+	@./vendor/bin/saill up -d
