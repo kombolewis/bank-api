@@ -17,6 +17,10 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
+        $request->validate([
+            'username' => 'required|string|email',
+            'password' => 'required|string',
+        ]);
         $req = Request::create(config('services.passport.login_endpoint'), 'POST', [
             'grant_type' => 'password',
             'client_id' => config('services.passport.client_id'),

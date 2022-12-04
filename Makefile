@@ -1,7 +1,10 @@
-.PHONY: up migrate fresh migratereset migratefresh migrateseed test key
+.PHONY: up down migrate fresh migratereset migratefresh migrateseed test key
 
 up:
 	@./vendor/bin/sail up 
+
+down:
+	@./vendor/bin/sail down 
 
 migrate:
 	@./vendor/bin/sail artisan migrate 
@@ -32,9 +35,10 @@ setup:
 	composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist  --ignore-platform-reqs
 	@./vendor/bin/sail up -d
 	@./vendor/bin/sail artisan key:generate
-	@./vendor/bin/sail artisan migrate 
+	@./vendor/bin/sail artisan migrate:refresh --seed
 	@./vendor/bin/sail artisan passport:install
-	chmod -R 777 storage bootstrap/cache
-	touch database/database.sqlite
-	echo 'DONE'
-	
+	# @./vendor/bin/sail down
+	# @./vendor/bin/sail up -d
+	@chmod -R 777 storage bootstrap/cache
+	@touch database/database.sqlite
+	@echo 'DONE'

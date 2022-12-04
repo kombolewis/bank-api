@@ -17,8 +17,6 @@ class RoleSeeder extends Seeder
     {
         Role::insert([
             ['name' => 'admin', 'description' => 'this user can assign roles'],
-            ['name' => 'viewer', 'description' => 'this user can view transfer history and retrieve balances for an account'],
-            ['name' => 'creator', 'description' => 'this user can create new bank accounts and initiate transfers between accounts'],
         ]);
     }
 }
