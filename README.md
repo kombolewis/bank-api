@@ -4,9 +4,9 @@ A simple API built in Laravel to simulate the functionalities of a small banking
 
 
 ## Installation
-The application is setup to utilize docker containers to run. The initilization however partly depends on local composer and php to complete.
-You therefore require, php,composer&docker to get started.
-If you have these get started by running the command below:
+The application is setup to utilize docker containers to run. The initilization, however, partly depends on local composer and php to complete.
+You therefore require, php, composer & docker to get started.
+If you have these, get started by running the command below:
 
 ```
 make setup
@@ -22,9 +22,8 @@ The application is basically setup and ready to go. You can run tests through
 make test
 
 ```
-
-Or test the endpoints provided by the application. 
-In order to explore the endpoints, the seeder during setup, creates an admin user to aid with this.
+ 
+In order to explore the endpoints, an admin user is setup during setup above to  aid with this.
 The credentials are as below:
 
 ```
