@@ -59,7 +59,7 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        auth()->user()->token->each(function ($token) {
+        auth()->user()->tokens->each(function ($token) {
             $token->delete();
         });
 

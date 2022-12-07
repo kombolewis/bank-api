@@ -17,7 +17,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return User::all()->toJson();
+        return response()->json(User::all());
     }
     /**
      * edit/assign roles for users

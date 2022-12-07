@@ -1,6 +1,9 @@
 ## Bank API
 
-A simple API built in Laravel to simulate the functionalities of a small banking instituion
+A simple API built in Laravel to simulate the functionalities of a small banking institution
+
+## Documentation
+Documentation is hosted at https://documenter.getpostman.com/view/8835770/2s8YzQVibF
 
 
 ## Installation

@@ -15,7 +15,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return Role::all()->toJson();
+        return response()->json(Role::all());
     }
 
     /**
@@ -27,7 +27,7 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string',
+            'name' => 'required|string|unique:roles',
             'description' => 'required|string',
         ]);
         return Role::create($request->all());
