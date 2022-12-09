@@ -33,18 +33,18 @@ Route::prefix('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:api');
 });
 
-Route::prefix('admin')->middleware(['auth:api','can:isAdmin'])->group(function () {
+Route::prefix('admin')->middleware(['auth:api','admin'])->group(function () {
     Route::apiResource('roles', RoleController::class);
     Route::resource('users', AdminController::class)->only(['index', 'store']);
 });
 
 Route::prefix('user')->middleware('auth:api')->group(function () {
-    Route::middleware('can:isCreator')->group(function () {
+    Route::middleware('creator')->group(function () {
         Route::post('/actions', [AccountActionsController::class, 'store']);
         Route::post('/transfer', [AccountTransfersController::class, 'store']);
     });
 
-    Route::middleware('can:isViewer')->group(function () {
+    Route::middleware('viewer')->group(function () {
         Route::get('/actions/{account}', [AccountActionsController::class, 'show']);
         Route::get('/transfer/{account}', [AccountTransfersController::class, 'show']);
     });
