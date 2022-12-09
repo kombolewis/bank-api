@@ -31,7 +31,11 @@ class AuthController extends Controller
         ]);
 
 
-        return app()->handle($req);
+        try {
+            return app()->handle($req);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'could not complete login'], 500);
+        }
     }
 
     /**
@@ -48,7 +52,11 @@ class AuthController extends Controller
             'password' => 'required|string|min:6',
         ]);
 
-        return User::create($request->all());
+        try {
+            return User::create($request->all());
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'could not create user'], 500);
+        }
     }
 
     /**
@@ -59,10 +67,14 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        auth()->user()->tokens->each(function ($token) {
-            $token->delete();
-        });
+        try {
+            auth()->user()->tokens->each(function ($token) {
+                $token->delete();
+            });
 
-        return response()->json('logged out successfully', 200);
+            return response()->json('logged out successfully', 200);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'could not log out'], 500);
+        }
     }
 }

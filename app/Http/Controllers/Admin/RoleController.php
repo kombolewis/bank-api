@@ -15,7 +15,11 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return response()->json(Role::all());
+        try {
+            return response()->json(Role::all());
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'could not retrieve roles'], 500);
+        }
     }
 
     /**
@@ -30,7 +34,12 @@ class RoleController extends Controller
             'name' => 'required|string|unique:roles',
             'description' => 'required|string',
         ]);
-        return Role::create($request->all());
+
+        try {
+            return Role::create($request->all());
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'could not create role'], 500);
+        }
     }
 
     /**
@@ -41,10 +50,7 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        if ($role) {
-            return $role;
-        }
-        return response()->json([], 404);
+        return $role;
     }
 
     /**
@@ -56,13 +62,10 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        if ($role) {
-            if ($role->update($request->all())) {
-                return $role;
-            }
-            return response()->json([], 500);
+        if ($role->update($request->all())) {
+            return $role;
         }
-        return response()->json([], 404);
+        return response()->json(['message' => 'could not update role'], 500);
     }
 
     /**
@@ -73,13 +76,10 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
-        if ($role) {
-            $role->users()->detach($role->id);
-            if ($role->delete()) {
-                return response()->json([], 200);
-            }
-            return response()->json([], 500);
+        $role->users()->detach($role->id);
+        if ($role->delete()) {
+            return response()->json([], 200);
         }
-        return response()->json([], 404);
+        return response()->json(['message' => 'could not remove role'], 500);
     }
 }

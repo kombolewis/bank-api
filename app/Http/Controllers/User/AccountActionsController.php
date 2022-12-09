@@ -25,14 +25,18 @@ class AccountActionsController extends Controller
             'deposit' => 'required|numeric',
         ]);
 
-        return AccountUser::firstOrCreate(
-            ['email' => $request->email],
-            ['name' => $request->name]
-        )->accounts()->create(
-            [
-                'balance' => $request->deposit
-            ]
-        );
+        try {
+            return AccountUser::firstOrCreate(
+                ['email' => $request->email],
+                ['name' => $request->name]
+            )->accounts()->create(
+                [
+                    'balance' => $request->deposit
+                ]
+            );
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'could not create account'], 500);
+        }
     }
 
     /**

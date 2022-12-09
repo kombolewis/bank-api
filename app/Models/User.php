@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Arr;
 
 class User extends Authenticatable
 {
@@ -18,6 +19,7 @@ class User extends Authenticatable
     use HasFactory;
     use Notifiable;
     use ModelTrait;
+
 
     /**
      * The attributes that are mass assignable.
@@ -39,9 +41,9 @@ class User extends Authenticatable
         'roles',
         'password',
         'remember_token',
-        // 'email_verified_at',
-        // 'created_at',
-        // 'updated_at',
+        'email_verified_at',
+        'created_at',
+        'updated_at',
     ];
 
     /**
@@ -109,5 +111,20 @@ class User extends Authenticatable
     public function hasRoles(array $roles): bool
     {
         return null !== $this->roles()->whereIn('name', $roles)->first();
+    }
+
+    /**
+     * assign roles to user
+     *
+     * @param array $roles
+     * @return self
+     */
+    public function assignRoles(array $roles): self
+    {
+        $roles = collect($roles)->map(function ($role) {
+            return Role::where('name', $role)->get()->pluck('id')->first();
+        });
+        $this->roles()->sync($roles);
+        return $this;
     }
 }

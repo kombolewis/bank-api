@@ -17,7 +17,11 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return response()->json(User::all());
+        try {
+            return response()->json(User::all());
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'could not retrieve users'], 500);
+        }
     }
     /**
      * edit/assign roles for users
@@ -30,17 +34,19 @@ class AdminController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'roles' => 'required|array',
+            'roles' => 'present|array',
         ]);
 
-        $user = User::where('email', $request->email)->firstOrFail();
+        $user = User::where('email', $request->email)->first();
 
-        $roles = collect($request->roles)->map(function ($role) {
-            return Role::where('name', $role)->get()->pluck('id')->first();
-        });
+        if (!$user) {
+            return response()->json(['message' => 'user not found'], 400);
+        }
 
-        $user->roles()->sync($roles);
-
-        return $user;
+        try {
+            return $user->assignRoles($request->roles);
+        } catch (\Throwable $th) {
+            return response()->json(['message' => 'could not assign role to user'], 400);
+        }
     }
 }

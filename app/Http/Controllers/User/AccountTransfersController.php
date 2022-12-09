@@ -36,14 +36,18 @@ class AccountTransfersController extends Controller
             'amount' => 'required|numeric'
         ]);
 
-        $message =  'transfer executed successfully';
-        $status =  201;
         try {
             (new Transfer())->executeTransfer($request->all());
+            return response()->json(['message' => 'transfer executed successfully'], 201);
         } catch(\Exception $e) {
             $status =  $e->getCode();
-            $message =  "transfer failed: " .  $e->getMessage();
+            if ($status  == 400 || $status == 422) {
+                $message =  "transfer failed: " .  $e->getMessage();
+            } else {
+                $message =  "could not complete transfer";
+                $status =  500;
+            }
+            return response()->json(['message' => $message], $status);
         }
-        return response()->json(['message' => $message], $status);
     }
 }
