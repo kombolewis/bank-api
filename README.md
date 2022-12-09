@@ -3,7 +3,8 @@
 A simple API built in Laravel to simulate the functionalities of a small banking institution
 
 ## Documentation
-Documentation is hosted at https://documenter.getpostman.com/view/8835770/2s8YzQVibF
+Documentation is hosted at: <a href="https://documenter.getpostman.com/view/8835770/2s8YzQVibF" target="_blank">Documentation</a>
+
 
 
 ## Installation
