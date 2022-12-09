@@ -72,7 +72,7 @@ class AuthController extends Controller
                 $token->delete();
             });
 
-            return response()->json('logged out successfully', 200);
+            return response()->json(['message' => 'logged out successfully'], 200);
         } catch (\Throwable $th) {
             return response()->json(['message' => 'could not log out'], 500);
         }

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\User;
+use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -56,5 +57,18 @@ class AuthRouteTest extends TestCase
         ])
         ->assertStatus(200)
         ->assertJsonStructure(['token_type','access_token','refresh_token']);
+    }
+
+    /**
+     * test user can logout
+     *
+     * @return void
+     */
+    public function test_user_can_logout()
+    {
+        Passport::actingAs($user = User::factory()->create());
+        $this->json('POST', 'api/auth/logout')
+        ->assertStatus(200)
+        ->assertJson(['message' => 'logged out successfully']);
     }
 }
